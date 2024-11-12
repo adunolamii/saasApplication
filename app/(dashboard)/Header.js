@@ -16,6 +16,7 @@ const Header = () => {
 
     </div>
     <WelcomeMsg/>
+    
     </div>
   )
 }

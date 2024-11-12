@@ -1,10 +1,10 @@
 import React from 'react'
-import TransactionsTable from './TransactionsTable'
+import TransactionsTable from './trans/TransactionsTable'
 
 const Page = () => {
   return (
-    <div> tran Page
-      {/* <TransactionsTable/> */}
+    <div>
+      <TransactionsTable/>
     </div>
   )
 }
