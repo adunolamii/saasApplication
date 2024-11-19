@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 // import { UserButton } from "@clerk/nextjs";
 import Header from "./Header";
 import { Bar } from "react-chartjs-2";
-// Import Bar chart from react-chartjs-2
-// Import necessary Chart.js components
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -28,7 +27,7 @@ ChartJS.register(
 import Piechart from "./Piechart"
 import Linegraph from "./Linegraph"
 import Histogram from "./Histogram"
-import Funnelchart from "./Funnelchart"
+// import Funnelchart from "./Funnelchart"
 
 const page = () => {
   const [chartData, setChartData] = useState(null); // State to hold the chart data
@@ -170,9 +169,9 @@ const page = () => {
        
       </div>
       <Piechart/>
-      <Linegraph/>
-      <Histogram/>
-      <Funnelchart/>
+      {/* <Linegraph/> */}
+      <Histogram/> 
+      {/* <Funnelchart/> */}
     </div>
     
   );

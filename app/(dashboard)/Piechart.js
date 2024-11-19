@@ -1,11 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Pie } from "react-chartjs-2";
+// import { Pie } from "react-chartjs-2";
 import axios from "axios";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 // Register Chart.js elements
 ChartJS.register(ArcElement, Tooltip, Legend);
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
 
 const PieChart = () => {
   const [chartData, setChartData] = useState(null);

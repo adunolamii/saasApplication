@@ -98,21 +98,19 @@ const TransactionsTable = () => {
 
       <Dialog>
         <DialogTrigger asChild>
-          {/* <div> */}
+          
             <Button
               onClick={handleButtonClick}
               className="text-xl font-bold mb-4 w-full"
             >
               Add New Transactions{" "}
             </Button>
-          {/* </div> */}
+         
         </DialogTrigger>
         <DialogContent>
-          {/* <DialogHeader> */}
+         
             <DialogTitle>Add New Transactions</DialogTitle>
-            {/* <DialogDescription> */}
-              {/* {isFormVisible && ( 
-                 <div ref={formRef} className="mt-8"> */}
+            
 
               <form onSubmit={handleAddTransaction} className="space-y-4">
                 <label className=" font-sans text-xl font-bold">Date</label>
@@ -153,10 +151,7 @@ const TransactionsTable = () => {
                 />
                 <button className=" bg-black text-white rounded-md mt-15 w-full text-xl">ADD</button>
               </form>
-              {/* </div>  */}
-              {/* )} */}
-            {/* </DialogDescription>
-          </DialogHeader> */}
+            
 
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild></DialogClose>

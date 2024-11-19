@@ -1,8 +1,11 @@
 import React from 'react'
+import CategoryForm from './_components/CategoryForm'
 
 const page = () => {
   return (
-    <div> cat page</div>
+    <div> 
+      <CategoryForm/>
+    </div>
   )
 }
 
