@@ -5,8 +5,8 @@ import Header from "../page"
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-// import TrancLists from "./TrancLists";
 import TrancLists from "../TrancLists";
+import Pagination from "../../Pagination";
 
 
 const TransactionsTable = () => {
@@ -35,12 +35,25 @@ const TransactionsTable = () => {
     listDatas();
   }, []);
 
+  // PAGINATION
+ const itemsPerPage = 3;  // 3 items per page
+ const [currentPage, setCurrentPage] = useState(1);  // Track current page
+ const [data, setData] = useState([]);  // Store data from API
+ 
+ // Get the data to display for the current page
+const startIndex = (currentPage - 1) * itemsPerPage;
+const currentItems = datas.slice(startIndex, startIndex + itemsPerPage);
+// Calculate total pages based on the number of items and items per page
+const totalPages = Math.ceil(datas.length / itemsPerPage);
+
+
+// HANDLE INPUT
   const handleOnchangeInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setFormData((form) => ({ ...form, [name]: value }));
   };
-
+// HANDLE SUBMIT
   const handleAddTransaction = async (e) => {
     e.preventDefault();
 
@@ -146,7 +159,31 @@ const TransactionsTable = () => {
             </tr>
           </thead>
           <tbody>
-            {datas.map((item, index) => (
+                  {/*  RENDERING WITH PAGINATION */}
+                  {datas.length === 0 ? (
+    <tr>
+      <td colSpan="5" className="text-center p-2">
+        No data available
+      </td>
+    </tr>
+  ) : (
+    datas.slice(startIndex, startIndex + itemsPerPage).map((item, index) => {
+      return (
+        <TrancLists
+          key={index}
+          id={index}
+          mongoId={item._id}
+          name={item.name}
+          type={item.type}
+          color={item.color}
+          deleteTransaction={deleteTransaction}
+        />
+      );
+    })
+  )}
+
+            {/* RENDERING WITHOUT PAGINATION */}
+            {/* {datas.map((item, index) => (
               <TrancLists
                 key={index}
                 id={index}
@@ -157,9 +194,14 @@ const TransactionsTable = () => {
                 description={item.description}
                 deleteTransaction={deleteTransaction}
               />
-            ))}
+            ))} */}
           </tbody>
         </table>
+        <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
       </div>
     </>
   );
