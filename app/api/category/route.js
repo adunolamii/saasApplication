@@ -18,11 +18,11 @@ export async function POST(request){
         name,
         type,
         color,
-        
-    })
+   })
     
     return NextResponse.json({msg:"Category Added"})
 }
+
 // READ GET HTTP METHOD
 export async function GET(request){
     const Category = await CategoryModels.find({});
