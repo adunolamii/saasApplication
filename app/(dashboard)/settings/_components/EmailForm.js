@@ -1,7 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../../Header";
+import EmailTable from "./EmailTable";
+import DeleteSub from "./DeleteSub";
+// import { ToastContainer, Toast } from '@shadcn/ui';
+// import { X } from 'react-feather'; // For the close icon
 
 const EmailForm = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -27,7 +31,7 @@ const EmailForm = () => {
     }
 
     const userId = "605c72ef1532075b18ed89f6"; // Use the appropriate userId here
-
+   
     try {
       // Send POST request to backend to add the email settings
       const response = await axios.post("/api/email", {
@@ -44,10 +48,76 @@ const EmailForm = () => {
       console.error(err);
     }
   };
+// SUB BACKEND POST req
+  const [userId, setUserId] = useState('');
+  const [stripeCustomerId, setStripeCustomerId] = useState('');
+  const [stripeSubscriptionId, setStripeSubscriptionId] = useState('');
+  const [planId, setPlanId] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+
+    // Ensure all fields are filled
+    if (!userId || !stripeCustomerId || !stripeSubscriptionId || !planId) {
+      setMessage('All fields are required');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.post('/api/subscription', {
+        userId,
+        stripeCustomerId,
+        stripeSubscriptionId,
+        planId,
+      });
+
+      setMessage(response.data.msg);
+      setLoading(false);
+    } catch (error) {
+      setMessage('Failed to create subscription');
+      setLoading(false);
+      console.error('Error creating subscription:', error);
+    }
+  };
+
+  // SUB GET req
+  const [subscriptions, setSubscriptions] = useState([]);
+ 
+  // const userId = "605c72ef1532075b18ed89f6"; // Replace with dynamic userId from your app
+
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      try {
+        const response = await axios.get(`/api/subscription?userId=${userId}`);
+        
+        if (response.data.subscriptions) {
+          setSubscriptions(response.data.subscriptions);
+        } else {
+          setError("No subscriptions found.");
+        }
+      } catch (err) {
+        console.error("Error fetching subscriptions:", err);
+        setError("Failed to fetch subscriptions");
+      }
+    };
+
+    if (userId) {
+      fetchSubscriptions();
+    }
+  }, [userId]);
+  // DELETE SUB
+
+
+
+
 
   return (
-    
-    <div className="email-form">
+   <div className="email-form">
         {/* <Header/> */}
      {success && <div className="success-message">{success}</div>}
       {error && <div className="error-message">{error}</div>}
@@ -115,7 +185,84 @@ const EmailForm = () => {
           </div>
         </form>
       </div>
+      {/* SUB FOR BACKEND */}
+       <div className="w-full max-w-md mx-auto mt-10">
+      <h2 className="text-2xl font-semibold text-center">Create Subscription</h2>
+      
+      <form onSubmit={submit} className="mt-6 space-y-4">
+        <div>
+          <label htmlFor="userId" className="block text-sm font-medium">User ID</label>
+          <input
+            type="text"
+            id="userId"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter User ID"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="stripeCustomerId" className="block text-sm font-medium">Stripe Customer ID</label>
+          <input
+            type="text"
+            id="stripeCustomerId"
+            value={stripeCustomerId}
+            onChange={(e) => setStripeCustomerId(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter Stripe Customer ID"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="stripeSubscriptionId" className="block text-sm font-medium">Stripe Subscription ID</label>
+          <input
+            type="text"
+            id="stripeSubscriptionId"
+            value={stripeSubscriptionId}
+            onChange={(e) => setStripeSubscriptionId(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter Stripe Subscription ID"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="planId" className="block text-sm font-medium">Plan ID</label>
+          <input
+            type="text"
+            id="planId"
+            value={planId}
+            onChange={(e) => setPlanId(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter Plan ID"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none"
+        >
+          {loading ? 'Submitting...' : 'Create Subscription'}
+        </button>
+      </form>
+
+      {message && (
+        <div className="mt-4 text-center">
+          <p className="text-lg font-medium">{message}</p>
+        </div>
+      )}
     </div>
+{/* GET REQ */}
+<div className="container mx-auto p-6">
+      <h1 className="text-2xl font-semibold mb-6">Your Subscriptions</h1>
+
+      {/* Pass subscriptions and error to SubscriptionList component */}
+      <EmailTable subscriptions={subscriptions} error={error} />
+    </div>   
+    {/* DELETE */}
+    <DeleteSub/>
+    
+     </div>
   );
 };
 
