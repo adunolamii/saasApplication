@@ -4,6 +4,7 @@ import axios from "axios";
 import Header from "../../Header";
 import EmailTable from "./EmailTable";
 import DeleteSub from "./DeleteSub";
+import Sub from "./Sub"
 // import { ToastContainer, Toast } from '@shadcn/ui';
 // import { X } from 'react-feather'; // For the close icon
 
@@ -261,6 +262,7 @@ const EmailForm = () => {
     </div>   
     {/* DELETE */}
     <DeleteSub/>
+    <Sub/>
     
      </div>
   );
