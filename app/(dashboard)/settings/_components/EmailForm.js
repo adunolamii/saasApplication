@@ -187,7 +187,7 @@ const EmailForm = () => {
         </form>
       </div>
       {/* SUB FOR BACKEND */}
-       <div className="w-full max-w-md mx-auto mt-10">
+       {/* <div className="w-full max-w-md mx-auto mt-10">
       <h2 className="text-2xl font-semibold text-center">Create Subscription</h2>
       
       <form onSubmit={submit} className="mt-6 space-y-4">
@@ -252,16 +252,16 @@ const EmailForm = () => {
           <p className="text-lg font-medium">{message}</p>
         </div>
       )}
-    </div>
+    </div> */}
 {/* GET REQ */}
 <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-semibold mb-6">Your Subscriptions</h1>
+      {/* <h1 className="text-2xl font-semibold mb-6">Your Subscriptions</h1> */}
 
       {/* Pass subscriptions and error to SubscriptionList component */}
       <EmailTable subscriptions={subscriptions} error={error} />
     </div>   
     {/* DELETE */}
-    <DeleteSub/>
+    {/* <DeleteSub/> */}
     <Sub/>
     
      </div>
