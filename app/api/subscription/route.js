@@ -11,7 +11,13 @@ const loadDB = async () => {
 loadDB();
 
 // Initialize Stripe with the secret key from environment variables
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+// Initialize Stripe with secret key
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+//   apiVersion: '2020-08-27',
+// });
+
 
 // POST endpoint for creating a subscription
 
@@ -81,7 +87,55 @@ export async function POST(req) {
   }
 }
 
-
-
 // DELETE REQ
-  
+
+// Initialize Stripe with the secret key
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+export async function DELETE(req) {
+  try {
+    // Extract user data from the request body
+    const { userId, stripeSubscriptionId } = await req.json();
+
+    // Check if the subscription ID exists
+    if (!stripeSubscriptionId) {
+      return NextResponse.json(
+        { msg: 'Stripe Subscription ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Step 1: Cancel the subscription in Stripe using the correct method
+    // This should be stripe.subscriptions.del if you're on the latest version.
+    const subscription = await stripe.subscriptions.del(stripeSubscriptionId);
+
+    // Step 2: Check if the subscription is canceled
+    if (!subscription || subscription.status !== 'canceled') {
+      return NextResponse.json(
+        { msg: 'Failed to cancel the subscription' },
+        { status: 500 }
+      );
+    }
+
+    // Step 3: Update the database to reflect the cancellation status
+    // You can update your MongoDB with a cancel status
+    await Subscription.findOneAndUpdate(
+      { stripeSubscriptionId },
+      { status: 'canceled' }, // Update the status in your database
+      { new: true }
+    );
+
+    // Success
+    return NextResponse.json(
+      { msg: 'Subscription canceled successfully', subscription },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error('Error canceling subscription:', error);
+    return NextResponse.json(
+      { msg: 'Error canceling subscription', error: error.message },
+      { status: 500 }
+    );
+  }
+}

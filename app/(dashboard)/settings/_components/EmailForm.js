@@ -5,6 +5,7 @@ import Header from "../../Header";
 import EmailTable from "./EmailTable";
 import DeleteSub from "./DeleteSub";
 import Sub from "./Sub"
+import BillingForm from "./BillingForm";
 // import { ToastContainer, Toast } from '@shadcn/ui';
 // import { X } from 'react-feather'; // For the close icon
 
@@ -263,6 +264,7 @@ const EmailForm = () => {
     {/* DELETE */}
     {/* <DeleteSub/> */}
     <Sub/>
+    <BillingForm/>
     
      </div>
   );

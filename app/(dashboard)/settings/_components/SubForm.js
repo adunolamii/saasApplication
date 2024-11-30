@@ -6,47 +6,157 @@ import { loadStripe } from '@stripe/stripe-js';
     
 
     const CollectUserInfo = () => {
-    const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-   
-    const [formData, setFormData] = useState({
-        userId: "605c72ef1532075b18ed89f8", // Replace with your actual userId
-        email: "",
-        name: "",
-        planAmount: "",
-        planInterval: "month", // Default interval
-      });
+      const [userId, setUserId] = useState('');
+      const [plan, setPlan] = useState('');
+      const [startDate, setStartDate] = useState('');
+      const [billingInfo, setBillingInfo] = useState(null);
     
-      const [loading, setLoading] = useState(false);
-      const [message, setMessage] = useState("");
-    
-      // Handle input change
-      const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-      };
-    
-      // Handle form submission
       const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        setMessage("");
+    
+        const subscriptionData = {
+          userId,
+          plan,
+          startDate,
+        };
     
         try {
-          const response = await axios.post("/api/subscription", formData); // Backend API endpoint
-          setMessage(response.data.msg);
+          // Create Subscription
+          const response = await fetch('/api/subscription', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(subscriptionData),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            alert('Subscription created successfully');
+            // Call function to create billing entry after successful subscription
+            createBillingEntry(userId, plan, data.subscriptionStartDate);
+          } else {
+            alert('Error creating subscription: ' + data.error);
+          }
         } catch (error) {
-          console.error("Error creating subscription:", error);
-          setMessage(
-            error.response?.data?.msg || "An error occurred. Please try again."
-          );
-        } finally {
-          setLoading(false);
+          alert('An error occurred: ' + error.message);
         }
       };
+    
+      const createBillingEntry = async (userId, plan, startDate) => {
+        const dueDate = new Date(startDate);
+        dueDate.setMonth(dueDate.getMonth() + 1); // Set due date to next month
+    
+        const billingData = {
+          userId,
+          description: `Subscription for ${plan}`,
+          amount: 50, // Use your subscription plan's amount here
+          dueDate,
+        };
+    
+        try {
+          // Create Billing Entry
+          const response = await fetch('/api/billing', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(billingData),
+          });
+    
+          const data = await response.json();
+          if (response.ok) {
+            alert('Billing entry created successfully');
+            setBillingInfo(data.billing); // Optionally set state for billing info display
+          } else {
+            alert('Error creating billing entry: ' + data.error);
+          }
+        } catch (error) {
+          alert('An error occurred: ' + error.message);
+        }
+      };
+    
+    
+    // const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+   
+    // const [formData, setFormData] = useState({
+    //     userId: "605c72ef1532075b18ed89f8", 
+    //     email: "",
+    //     name: "",
+    //     planAmount: "",
+    //     planInterval: "month", // Default interval
+    //   });
+    
+    //   const [loading, setLoading] = useState(false);
+    //   const [message, setMessage] = useState("");
+    
+    //   // Handle input change
+    //   const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData((prev) => ({ ...prev, [name]: value }));
+    //   };
+    
+    //   // Handle form submission
+    //   const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setLoading(true);
+    //     setMessage("");
+    
+    //     try {
+    //       const response = await axios.post("/api/subscription", formData); // Backend API endpoint
+    //       setMessage(response.data.msg);
+    //     } catch (error) {
+    //       console.error("Error creating subscription:", error);
+    //       setMessage(
+    //         error.response?.data?.msg || "An error occurred. Please try again."
+    //       );
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   };
   return (
     
    <div>
-       <form
+    <form onSubmit={handleSubmit} className="space-y-4 p-4">
+      <div>
+        <label className="block">User ID</label>
+        <input
+          type="text"
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          required
+        />
+      </div>
+      <div>
+        <label className="block">Plan</label>
+        <input
+          type="text"
+          value={plan}
+          onChange={(e) => setPlan(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          required
+        />
+      </div>
+      <div>
+        <label className="block">Start Date</label>
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          required
+        />
+      </div>
+      <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+        Create Subscription
+      </button>
+    </form>
+
+
+
+       {/* <form
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg"
       >
@@ -132,7 +242,7 @@ import { loadStripe } from '@stripe/stripe-js';
             {message}
           </p>
         )}
-      </form>
+      </form> */}
    </div>
   
 )

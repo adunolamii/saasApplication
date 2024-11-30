@@ -99,6 +99,16 @@ const page = () => {
       
       {/* <UserButton afterSignOutUrl="/"/> */}
       <Header />
+{/* RESPONSIVENESS */}
+<div className=" h-screen w-full grid grid-col-4 bg-blue-500 gap-3 lg:grid">
+<div className="bg-green-500">A</div>
+<div className=" bg-orange-600">b</div>
+<div className=" bg-red-600">c</div>
+<div className=" bg-purple-800">A</div>
+</div>
+
+
+
       <div className="chart-container" style={{ position: 'relative', height: '400px', width: '600px' }}>
       
       {isLoading ? (
@@ -106,9 +116,7 @@ const page = () => {
       ) : chartData ? ( // Check if chartData is not null before rendering
         
         <Bar
-          // data={chartData}
-          // options={{ responsive: true, maintainAspectRatio: false }}
-          data={chartData}
+         data={chartData}
           options={{
             responsive: true,
             maintainAspectRatio: false,
@@ -161,7 +169,7 @@ const page = () => {
               },
             },
           }}
-        /> // Render the Bar chart
+        />
       ) : (
         <p>No data available</p>
       
