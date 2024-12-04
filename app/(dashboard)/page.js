@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { Bar } from "react-chartjs-2";
 
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -100,12 +101,12 @@ const page = () => {
       {/* <UserButton afterSignOutUrl="/"/> */}
       <Header />
 {/* RESPONSIVENESS */}
-<div className=" h-screen w-full grid grid-col-4 bg-blue-500 gap-3 lg:grid">
-<div className="bg-green-500">A</div>
+{/* <div className=" h-screen w-full grid grid-col-4 bg-blue-500 gap-3 lg:grid"> */}
+{/* <div className="bg-green-500">A</div>
 <div className=" bg-orange-600">b</div>
 <div className=" bg-red-600">c</div>
-<div className=" bg-purple-800">A</div>
-</div>
+<div className=" bg-purple-800">A</div> */}
+{/* </div> */}
 
 
 

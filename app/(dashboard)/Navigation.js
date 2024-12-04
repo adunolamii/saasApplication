@@ -30,6 +30,16 @@ function Navigation() {
       href: "/settings",
       label: "Settings",
     },
+    {
+      id: 6,
+      href: "/signup",
+      label: "signup",
+    },
+    {
+      id: 7,
+      href: "/signin",
+      label: "signin",
+    },
   ];
   const [showLabels, setShowLabels] = useState(false);
   const toggleLabels = () => {
