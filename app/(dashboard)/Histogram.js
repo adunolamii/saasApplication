@@ -94,7 +94,7 @@ const ColorfulBarChart = () => {
   }, []);
 
   return (
-    <div>
+    <div className="p-6 bg-white shadow-lg rounded-lg max-w-md mx-auto mt-8">
       {error ? (
         <p style={{ color: "red" }}>{error}</p>
       ) : chartData ? (
@@ -125,6 +125,8 @@ const ColorfulBarChart = () => {
                 },
               },
             }}
+            height={550}
+        width={450}
           />
         </div>
       ) : (

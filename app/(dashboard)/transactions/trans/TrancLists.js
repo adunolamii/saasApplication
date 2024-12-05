@@ -12,8 +12,8 @@ const TrancLists = ({id,date, amount, category, description, mongoId, deleteTran
         <td className="p-2 border border-gray-300">{category}</td>
         <td className="p-2 border border-gray-300">{description}</td>
         <td className="p-2 border border-gray-300  flex px-6 py-4 gap-1">
-        <button className=" bg-green-800 text-white" onClick={()=>deleteTransaction(mongoId)}>DELETE</button>
-        <button className=" bg-red-800 text-white">DONE</button>
+        <button className="  bg-green-800 text-white w-40 m-auto h-8 rounded-sm font-bold" onClick={()=>deleteTransaction(mongoId)}>DELETE</button>
+        {/* <button className=" bg-red-800 text-white">DONE</button> */}
         </td>
         
       </tr>

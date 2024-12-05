@@ -98,7 +98,6 @@ const totalPages = Math.ceil(datas.length / itemsPerPage);
       formRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   };
-  
 
   return (
     <div>
@@ -212,6 +211,7 @@ const totalPages = Math.ceil(datas.length / itemsPerPage);
         totalPages={totalPages}
         onPageChange={(page) => setCurrentPage(page)}
       />
+
     </div>
   );
 }

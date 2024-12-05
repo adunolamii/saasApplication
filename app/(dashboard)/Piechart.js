@@ -1,10 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-// import { Pie } from "react-chartjs-2";
 import axios from "axios";
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-
-// Register Chart.js elements
 ChartJS.register(ArcElement, Tooltip, Legend);
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
@@ -56,7 +52,7 @@ const PieChart = () => {
   }, []);
 
   return (
-    <div>
+    <div  className="p-6 bg-white shadow-lg rounded-lg max-w-md mx-auto mt-8">
       {error ? (
         <p style={{ color: "red" }}>{error}</p>
       ) : chartData ? (

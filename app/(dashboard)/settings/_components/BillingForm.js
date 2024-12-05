@@ -69,31 +69,48 @@ const BillingForm = () => {
     };
 
   return (
-    <div>BillingForm
+    <div>
      
      <div>
       {error && <div>{error}</div>}
       {successMessage && <div>{successMessage}</div>}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <input
-          type="date"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-        />
-        <button type="submit">Create Billing Entry</button>
-      </form>
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg space-y-4 max-w-md shadow-lg mx-auto">
+  <div>
+    <label className="block text-gray-700 font-medium mb-2">Description</label>
+    <input
+      type="text"
+      placeholder="Description"
+      value={description}
+      onChange={(e) => setDescription(e.target.value)}
+      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+  <div>
+    <label className="block text-gray-700 font-medium mb-2">Amount</label>
+    <input
+      type="number"
+      placeholder="Amount"
+      value={amount}
+      onChange={(e) => setAmount(e.target.value)}
+      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+  <div>
+    <label className="block text-gray-700 font-medium mb-2">Due Date</label>
+    <input
+      type="date"
+      value={dueDate}
+      onChange={(e) => setDueDate(e.target.value)}
+      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+  <button
+    type="submit"
+    className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-black transition"
+  >
+    Create Billing Entry
+  </button>
+</form>
     </div>
     
     </div>

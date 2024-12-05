@@ -1,5 +1,3 @@
-
-
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { connectDB } from "@/lib/config/database";
@@ -43,7 +41,7 @@ const loadDB = async()=>{
       await sendEmail({
         to: email,
         subject: 'Welcome to Our App!',
-        text: `Hi ${name},\n\nThank you for signing up. Welcome aboard!`,
+        text: `Hi ${name},\n\nThank you for signing up. Welcome on aboard!`,
       });
   
       // Return success response

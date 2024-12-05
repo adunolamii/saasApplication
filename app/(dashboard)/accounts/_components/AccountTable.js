@@ -9,8 +9,8 @@ const AccountTable = ({id,name, type, balance, description,  mongoId, deleteAcco
     <td className="p-2 border border-gray-300">{balance}</td>
     <td className="p-2 border border-gray-300">{description}</td>
     <td className="p-2 border border-gray-300  flex px-6 py-4 gap-1">
-    <button className=" bg-green-800 text-white w-20 h-8 rounded-sm font-bold" onClick={()=>deleteAccount(mongoId)}>DELETE</button>
-    <button className=" bg-red-800 text-white w-20 rounded-sm font-bold">DONE</button>
+    <button className=" bg-green-800 text-white w-40 m-auto h-8 rounded-sm font-bold" onClick={()=>deleteAccount(mongoId)}>DELETE</button>
+   
     </td>
     
   </tr>
