@@ -1,117 +1,43 @@
-"use client";
-import React, { useEffect, useState } from "react";
-// import { UserButton } from "@clerk/nextjs";
-import Header from "./Header";
-import { Bar } from "react-chartjs-2";
-
-
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from 'react-chartjs-2';
-import { Pie } from 'react-chartjs-2';
-
-// Register the Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-import Piechart from "./Piechart"
-import Linegraph from "./Linegraph"
-import Histogram from "./Histogram"
-import AreaChart from "./AreaChart";
-import FunnelChart from "./FunnelChart";
-
+import React from 'react'
+import Image from "next/image";
 
 const page = () => {
-  const [chartData, setChartData] = useState(null); // State to hold the chart data
-  const [isLoading, setIsLoading] = useState(true); // Loading state
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch("/api/transaction");
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Fetched data:", data); // Log the full structure here
-
-      const processedData = processTransactionData(data);
-      setChartData(processedData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const processTransactionData = (data) => {
-    const transactions = data.transactions || []; // Access the array within the object
-
-    if (!Array.isArray(transactions)) {
-      console.error(
-        "Expected transactions to be an array, but got:",
-        transactions
-      );
-      return {
-        labels: [],
-        datasets: [],
-      };
-    }
-
-    const categories = {};
-
-    // Group data by category
-    transactions.forEach((transaction) => {
-      const { category, amount } = transaction;
-      categories[category] = (categories[category] || 0) + amount;
-    });
-
-    return {
-      labels: Object.keys(categories),
-      datasets: [
-        {
-          label: "Transaction Amount by Category",
-          data: Object.values(categories),
-          backgroundColor: ["#4CAF50", "#FFC107", "#FF5722"],
-        },
-      ],
-    };
-  };
-
-  // Fetch data when component mounts
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
-    
-   
-<div>
-            <Header />
+    <div>
+          <div>
+      <section className="bg-gray-900 text-white">
+        <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+              An easier Financial App.
+            </h1>
 
-                        <Linegraph/>
-                        <FunnelChart/>
-                        <Piechart/>
-                        <Linegraph/>
-                        <Histogram/> 
-                        <AreaChart/>
+            <p className="mx-auto mt-4 max-w-xl sm:text-xl/relaxed">
+             Manage your Finance with us.
+            </p>
 
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <a
+                className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+                href="/signup"
+              >
+                SignUp
+              </a>
+              <a
+                className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+                href="/signin"
+              >
+                SignIn
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+     
     </div>
-    
-  );
-};
+    </div>
+  )
+}
 
-export default page;
+export default page
+

@@ -81,6 +81,8 @@ import { loadStripe } from '@stripe/stripe-js';
     
    <div>
     <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-lg max-w-md mx-auto">
+    <h2 className="text-2xl font-bold text-center text-gray-800">Activate Subscription</h2>
+   
   <div>
     <label className="block text-gray-700 font-semibold mb-2">User ID</label>
     <input

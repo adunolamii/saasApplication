@@ -24,7 +24,7 @@ import Pagination from "../../Pagination";
 const TransactionsTable = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formData, setFormData] = useState({
-    date: "",
+    
     amount: "",
     category: "",
     description: "",
@@ -44,15 +44,16 @@ const TransactionsTable = () => {
       formRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   };
+  
   // // FETCH DATAS
   const [datas, setDatas] = useState([]);
 
   const listDatas = async () => {
     const response = await axios("/api/transaction");
-    setDatas(response.data.Transaction);
+    setDatas(response.data.transaction);
   };
   //
-  const deleteTransaction = async (id) => {
+  const deleteAccount = async (id) => {
     const response = await axios.delete("/api/transaction", {
       params: {
         mongoId: id,
@@ -66,17 +67,15 @@ const TransactionsTable = () => {
     listDatas();
   }, []);
 
+  
   // PAGINATION
   const itemsPerPage = 3; // 3 items per page
   const [currentPage, setCurrentPage] = useState(1); // Track current page
-  const [data, setData] = useState([]); // Store data from API
-
-  // Get the data to display for the current page
+  const [data, setData] = useState([]); 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = datas.slice(startIndex, startIndex + itemsPerPage);
-  // Calculate total pages based on the number of items and items per page
   const totalPages = Math.ceil(datas.length / itemsPerPage);
-
+  
   // INPUT FIELD
   const handleOnchangeInput = (e) => {
     const name = e.target.name;
@@ -94,7 +93,7 @@ const TransactionsTable = () => {
     try {
       const response = await axios.post("/api/transaction", formData);
       console.log(response.data.msg);
-      setFormData({ date: "", amount: "", category: "", description: "" });
+      setFormData({ amount: "", category: "", description: "" });
     } catch (error) {
       console.log("error", error);
     }
@@ -120,16 +119,7 @@ const TransactionsTable = () => {
             <DialogTitle>Add New Transactions</DialogTitle>
 
             <form onSubmit={handleAddTransaction} className="space-y-4">
-              <label className=" font-sans text-xl font-bold">Date</label>
-              <Input
-                type="text"
-                placeholder="DATE"
-                className="text-xl mt-3"
-                name="date"
-                value={formData.date}
-                onChange={handleOnchangeInput}
-              />
-              <label className=" font-sans text-xl font-bold">Amount</label>
+             <label className=" font-sans text-xl font-bold">Amount</label>
               <Input
                 type="text"
                 placeholder="Amount"
@@ -172,7 +162,6 @@ const TransactionsTable = () => {
           <thead>
             <tr>
               <th className="p-2 border border-gray-300">Id</th>
-              <th className="p-2 border border-gray-300">Date</th>
               <th className="p-2 border border-gray-300">Amount</th>
               <th className="p-2 border border-gray-300">Category</th>
               <th className="p-2 border border-gray-300">Description</th>
@@ -191,19 +180,20 @@ const TransactionsTable = () => {
               datas
                 .slice(startIndex, startIndex + itemsPerPage)
                 .map((item, index) => {
-                  return (
-                    <TrancLists
-                      key={index}
-                      id={index}
-                      mongoId={item._id}
-                      name={item.name}
-                      type={item.type}
-                      color={item.color}
-                      deleteTransaction={deleteTransaction}
-                    />
-                  );
-                })
-            )}
+                return (
+                  <TrancLists
+                    key={index}
+                    id={index}
+                    mongoId={item._id}
+                    amount={item.amount}
+                    category={item.category}
+                    description={item.description}
+                    deleteAccount={deleteAccount}
+                  />
+                );
+              })
+          )}
+
 
             {/* RENDERING WITHOUT PAGINATION */}
 
@@ -234,3 +224,4 @@ const TransactionsTable = () => {
 };
 
 export default TransactionsTable;
+

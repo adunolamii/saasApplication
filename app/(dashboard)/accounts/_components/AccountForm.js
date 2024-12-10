@@ -55,14 +55,12 @@ export const AccountForm = () => {
   // PAGINATION
   const itemsPerPage = 3; // 3 items per page
   const [currentPage, setCurrentPage] = useState(1); // Track current page
-  const [data, setData] = useState([]); // Store data from API
-
-  // Get the data to display for the current page
+  const [data, setData] = useState([]); 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = datas.slice(startIndex, startIndex + itemsPerPage);
-  // Calculate total pages based on the number of items and items per page
   const totalPages = Math.ceil(datas.length / itemsPerPage);
 
+  // INPUT FIELD
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -194,7 +192,8 @@ export const AccountForm = () => {
                       mongoId={item._id}
                       name={item.name}
                       type={item.type}
-                      color={item.color}
+                      balance={item.balance}
+                      description={item.description}
                       deleteAccount={deleteAccount}
                     />
                   );

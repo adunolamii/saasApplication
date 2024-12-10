@@ -40,7 +40,7 @@ const loadDB = async()=>{
       // Send email notification
       await sendEmail({
         to: email,
-        subject: 'Welcome to Our App!',
+        subject: 'Welcome to Fianace App!',
         text: `Hi ${name},\n\nThank you for signing up. Welcome on aboard!`,
       });
   

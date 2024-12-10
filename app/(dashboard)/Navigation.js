@@ -8,7 +8,7 @@ function Navigation() {
   const routes = [
     {
       id: 1,
-      href: "/",
+      href: "/overview",
       label: "Overview",
     },
     {
@@ -31,16 +31,7 @@ function Navigation() {
       href: "/settings",
       label: "Settings",
     },
-    {
-      id: 6,
-      href: "/signup",
-      label: "Signup",
-    },
-    {
-      id: 7,
-      href: "/signin",
-      label: "Signin",
-    },
+   
   ];
   const [showLabels, setShowLabels] = useState(false);
   const toggleLabels = () => {

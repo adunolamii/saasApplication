@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -12,8 +13,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import TrancLists from "./transactions/TrancLists";
 
-// Register necessary components
+// Registering chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,115 +26,99 @@ ChartJS.register(
   Legend
 );
 
-const ColorfulLineChart = () => {
-  const [chartData, setChartData] = useState(null);
+const TransactionsTable = () => {
+  const [datas, setDatas] = useState([]);
+  const [chartData, setChartData] = useState(null); // For the chart data
   const [error, setError] = useState(null);
 
-  // Fetch data function
-  const fetchChartData = async () => {
-    try {
-      const response = await axios.get("/api/transaction");
-      const transactions = response.data.Transaction || [];
-
-      if (!Array.isArray(transactions)) {
-        throw new Error("Unexpected data format");
-      }
-
-      processData(transactions); // Process the data if it's valid
-    } catch (error) {
-      console.error("Error fetching chart data:", error);
-      setError("Failed to fetch chart data");
-    }
-  };
-
-  // Process the data into chart format
-  const processData = (transactions) => {
-    const labels = [];
-    const data = [];
-
-    // Example: categorize transactions by 'category' and separate data into different colors
-    const categoryData = {};
-    transactions.forEach((transaction) => {
-      labels.push(transaction.date); // Date for X axis
-      if (!categoryData[transaction.category]) {
-        categoryData[transaction.category] = [];
-      }
-      categoryData[transaction.category].push(transaction.amount); // Amount for Y axis
-    });
-
-    const datasets = Object.keys(categoryData).map((category, index) => ({
-      label: category,
-      data: categoryData[category],
-      borderColor: getColor(index), // Dynamic color for each category
-      backgroundColor: getColor(index, true), // Lighter color for fill under the line
-      tension: 0.4, // Line smoothing
-    }));
-
-    setChartData({
-      labels, // Date labels for X axis
-      datasets, // Data for multiple categories
-    });
-  };
-
-  // Generate dynamic colors based on index
-  const getColor = (index, isBackground = false) => {
-    const colors = [
-      "rgba(255, 99, 132, 1)", // Red
-      "rgba(54, 162, 235, 1)", // Blue
-      "rgba(255, 206, 86, 1)", // Yellow
-      "rgba(75, 192, 192, 1)", // Green
-      "rgba(153, 102, 255, 1)", // Purple
-      "rgba(255, 159, 64, 1)", // Orange
-    ];
-    return isBackground
-      ? colors[index % colors.length].replace("1)", "0.2)") // Lighter background color
-      : colors[index % colors.length];
+  const listDatas = async () => {
+    const response = await axios("/api/transaction");
+    setDatas(response.data.transaction);
   };
 
   useEffect(() => {
-    fetchChartData(); // Fetch chart data when component mounts
+    listDatas();
   }, []);
 
+  useEffect(() => {
+    // Prepare chart data after the transactions are fetched
+    if (datas.length > 0) {
+      prepareChartData(datas);
+    }
+  }, [datas]);
+
+  // Prepare chart data by category
+  const prepareChartData = (transactions) => {
+    const categoryData = {};
+
+    transactions.forEach((transaction) => {
+      if (transaction.category && transaction.amount !== undefined) {
+        if (!categoryData[transaction.category]) {
+          categoryData[transaction.category] = 0;
+        }
+        categoryData[transaction.category] += transaction.amount;
+      }
+    });
+
+    const labels = Object.keys(categoryData);
+    const data = Object.values(categoryData);
+
+    const datasets = [
+      {
+        label: "Amount by Category",
+        data: data,
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        tension: 0.4,
+      },
+    ];
+
+    setChartData({
+      labels, // Categories for the X-axis
+      datasets, // Amounts for the Y-axis
+    });
+  };
+
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg max-w-md mx-auto mt-8">
-      {error ? (
-        <p style={{ color: "red" }}>{error}</p>
-      ) : chartData ? (
-        <div style={{ width: "600px", height: "400px" }}>
-          <Line
-            data={chartData} // Chart data
-            options={{
-              responsive: true,
-              plugins: {
-                title: {
-                  display: true,
-                  text: "Transaction Data Over Time",
-                },
-              },
-              scales: {
-                x: {
+    <>
+      <div className="p-6 bg-white shadow-lg rounded-lg max-w-md mx-auto mt-8">
+        {error ? (
+          <p style={{ color: "red" }}>{error}</p>
+        ) : chartData ? (
+          <div style={{ width: "600px", height: "400px" }}>
+            <Line
+              data={chartData}
+              options={{
+                responsive: true,
+                plugins: {
                   title: {
                     display: true,
-                    text: "Date",
+                    text: "Transaction Amount by Category",
                   },
                 },
-                y: {
-                  title: {
-                    display: true,
-                    text: "Amount",
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: "Category",
+                    },
+                  },
+                  y: {
+                    title: {
+                      display: true,
+                      text: "Amount",
+                    },
                   },
                 },
-              },
-            }}
-            height={550}
-            width={450}
-          />
-        </div>
-      ) : (
-        <p>Loading chart...</p>
-      )}
-    </div>
+              }}
+            />
+          </div>
+        ) : (
+          <p>Loading chart...</p>
+        )}
+      </div>
+    </>
   );
 };
 
-export default ColorfulLineChart;
+export default TransactionsTable;

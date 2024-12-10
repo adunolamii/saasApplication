@@ -120,11 +120,11 @@ const EmailForm = () => {
       {success && <div className="success-message">{success}</div>}
       {error && <div className="error-message">{error}</div>}
 <section className="bg-white p-6 rounded-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          Email Notification Settings
-        </h2>
+       
         <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
- 
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
+         Activate Email Notification
+        </h2>
   <div className="bg-gray-50 p-6 rounded-lg ">
     <label
       htmlFor="userEmail"

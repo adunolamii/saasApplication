@@ -75,6 +75,9 @@ const BillingForm = () => {
       {error && <div>{error}</div>}
       {successMessage && <div>{successMessage}</div>}
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg space-y-4 max-w-md shadow-lg mx-auto">
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
+         Activate Billing Entry
+        </h2>
   <div>
     <label className="block text-gray-700 font-medium mb-2">Description</label>
     <input

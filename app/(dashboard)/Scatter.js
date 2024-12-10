@@ -1,23 +1,22 @@
-// "use client";
+"use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Line } from "react-chartjs-2"; // Change Bar to Line for area chart
+import { Bar } from "react-chartjs-2"; // Use Bar for horizontal bar chart
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import TrancLists from "./transactions/TrancLists";
 
 // Registering chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  LineElement, // LineElement for creating an area chart
+  BarElement, // BarElement for horizontal bars
   Title,
   Tooltip,
   Legend
@@ -64,16 +63,29 @@ const TransactionsTable = () => {
       {
         label: "Amount by Category",
         data: data,
-        backgroundColor: "rgba(75, 192, 192, 0.6)", // Teal background
-        borderColor: "rgba(75, 192, 192, 1)", // Teal border
-        borderWidth: 2,
-        fill: true, // To create the area effect
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.6)", // Pink
+          "rgba(54, 162, 235, 0.6)", // Blue
+          "rgba(255, 206, 86, 0.6)", // Yellow
+          "rgba(75, 192, 192, 0.6)", // Green
+          "rgba(153, 102, 255, 0.6)", // Purple
+          "rgba(255, 159, 64, 0.6)", // Orange
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)", 
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
       },
     ];
 
     setChartData({
-      labels, // Categories for the X-axis
-      datasets, // Amounts for the Y-axis
+      labels, // Categories for the Y-axis
+      datasets, // Amounts for the X-axis
     });
   };
 
@@ -83,29 +95,30 @@ const TransactionsTable = () => {
         <p style={{ color: "red" }}>{error}</p>
       ) : chartData ? (
         <div style={{ width: "100%", maxWidth: "800px", height: "400px", margin: "0 auto" }}>
-          <Line
+          <Bar
             data={chartData}
             options={{
               responsive: true,
+              indexAxis: 'y', // Make the chart horizontal
               plugins: {
                 title: {
                   display: true,
-                  text: "Transaction Amount by Category",
+                  text: "Transaction Amount by Category (Horizontal Bar Chart)",
                 },
               },
               scales: {
                 x: {
                   title: {
                     display: true,
-                    text: "Category",
+                    text: "Amount",
                   },
+                  beginAtZero: true,
                 },
                 y: {
                   title: {
                     display: true,
-                    text: "Amount",
+                    text: "Category",
                   },
-                  beginAtZero: true,
                 },
               },
             }}
